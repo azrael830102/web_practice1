@@ -1,0 +1,21 @@
+body {
+    background-color: #c0ecfc;
+}
+
+input[type="color"] {
+    height: 2rem;
+}
+
+#recordTb {
+    border-collapse: collapse;
+    border: 2px solid #4ea2c2;
+}
+
+#recordTb td {
+    border-collapse: collapse;
+    border: 1px solid #4ea2c2;
+
+}
+h5{
+    color: green;
+}
