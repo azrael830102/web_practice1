@@ -1,5 +1,7 @@
 <!------ Include the above in your HEAD tag ---------->
 <?php
+include("../model/init_table/initDB.php");
+
 require ("../model/required_import.php");
  require ("../model/config.php");
     if(isset($_POST['msg'])){
