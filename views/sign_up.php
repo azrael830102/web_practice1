@@ -1,4 +1,4 @@
-<?php include '../model/import_file.php';?>
+<?php  require ("../model/required_import.php");?>
 
 <script type="text/javascript">
     function hasaccfnc() {
