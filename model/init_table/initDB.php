@@ -1,10 +1,10 @@
 <?php
-   require ("../model/config.php");
-    $host = 'localhost:3308';
+   require ("../config.php");
+    $host = 'localhost';
     $user = 'root';
     $passwd = '';
     $database = 'summerpractice';
-    $conn = new mysqli($host, $user, $passwd);
+    $conn = mysqli_connect($host, $user, $passwd);
 
     $tb_members = 'members';
     $tb_members_files = 'members_files';
