@@ -12,6 +12,11 @@
      }
      function uploadFileToServer(){
         include ('../model/import_file.php');
+         //check "files" folder exists
+         if (!file_exists($upload_file_folder_path)) {
+            mkdir( $upload_file_folder_path );
+        }
+         
          if ($_FILES["selectedFile"]["error"] > 0){
             switch($_FILES["selectedFile"]["error"]) {
             case UPLOAD_ERR_INI_SIZE:
