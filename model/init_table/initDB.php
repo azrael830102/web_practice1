@@ -1,5 +1,6 @@
 <?php
-   require ("../config.php");
+
+   require (dirname(dirname(__FILE__))."/config.php");
     $host = 'localhost';
     $user = 'root';
     $passwd = '';
@@ -33,9 +34,6 @@
                                 $tb_color varchar(50)
                                 )";
         $result = $conn->query($sql_create_members);
-        echo $sql_create_members." created.";
-    }else{
-         echo $sql_create_members." create faild.";
     }
 
     $sql_query = "SELECT * 
@@ -52,9 +50,6 @@
                                 $tb_owner varchar(50)
                                 )";
         $result = $conn->query($sql_create_members);
-        echo $sql_create_members." created.";
-    }else{
-            echo $sql_create_members." create faild.";
     }
     $conn ->close();
 ?>
