@@ -1,4 +1,5 @@
 <?php
+   require ("../model/config.php");
     $host = 'localhost:3308';
     $user = 'root';
     $passwd = '';
@@ -16,7 +17,7 @@
         $sql_create_db="CREATE DATABASE $database";
         $conn->query($sql_create_db);
     }
-    mysql_select_db($database);
+    mysqli_select_db ($conn,$database);
 
     $sql_query = "SELECT * 
                   FROM information_schema.tables
