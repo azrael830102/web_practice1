@@ -1,5 +1,6 @@
 <?php
-    include ('../model/import_file.php');
+    require ("../model/required_import.php");
+  require ("../model/config.php");
     $msg = '';
     $redirectUrl = '/web_practice1/views/login.php';
 	$account = $_POST['account'];
