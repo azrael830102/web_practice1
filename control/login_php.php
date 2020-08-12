@@ -22,7 +22,10 @@
 	}else{
         $msg = $loginfailed_msg;
         $redirectUrl = '/web_practice1/views/login.php'; 
+        echo "========|".mysqli_error($connect)."|=======";
 	}
+    echo $sql_query."<br>";
+    print_r($result); 
     $connect -> close();
 ?>
 

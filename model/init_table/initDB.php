@@ -1,12 +1,12 @@
 <?php
 
    require (dirname(dirname(__FILE__))."/config.php");
-    $host = 'localhost';
+    $host = 'localhost:3308';
     $user = 'root';
     $passwd = '';
     $database = 'summerpractice';
     $conn = mysqli_connect($host, $user, $passwd);
-
+    echo $host." connected.<br>";
     $tb_members = 'members';
     $tb_members_files = 'members_files';
 
@@ -19,7 +19,8 @@
         $conn->query($sql_create_db);
     }
     mysqli_select_db ($conn,$database);
-
+    echo $database." connected.<br>";
+        
     $sql_query = "SELECT * 
                   FROM information_schema.tables
                   WHERE table_schema = '$database' 
