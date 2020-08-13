@@ -31,6 +31,11 @@
         document.getElementById("values").action='/web_practice1/views/file_page.php';
         document.getElementById("values").submit();
     }
+    function toMsgPage() {
+        document.getElementById("values").action='/web_practice1/views/msg_board/post_page.php';
+        document.getElementById("values").submit();
+    }
+    
 </script>
 <body>
     <div class="container">
@@ -54,6 +59,9 @@
                         <button class="btn btn-info btn-md" onclick="toFilePage();">File Page</button>
                     </td>
                     <td align="center">
+                        <button class="btn btn-info btn-md"  onclick="toMsgPage();">Message Board</button>
+                    </td>
+                     <td align="center">
                         <button class="btn btn-info btn-md"  onclick="toEditPage();">Edit Information</button>
                     </td>
                 </tr>

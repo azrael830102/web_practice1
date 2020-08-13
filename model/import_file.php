@@ -1,6 +1,6 @@
 <?php
-  require ("../model/required_import.php");
-  require ("../model/config.php");
+  require ("required_import.php");
+  require ("config.php");
   if(!isset($_SESSION)){
     session_start();
     }

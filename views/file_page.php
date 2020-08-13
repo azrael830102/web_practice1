@@ -23,6 +23,9 @@
     function backToMainPage() {
         location.replace('/web_practice1/views/main_page.php');
     }
+    function toMsgPage() {
+         location.replace('/web_practice1/views/msg_board/post_page.php');
+    }
 
     function checkFileLimit(number) {
         //      limit = 10MB
@@ -85,8 +88,11 @@
         <table class="table" style="border-top-style: hidden">
             <tbody>
                 <tr>
-                    <td width="95%">
+                    <td width="45%">
                         <h3 class="text-center text-info">Hi, <?php echo $name;?></h3>
+                    </td>
+                    <td width="45%" align="left">
+                        <h4 class="text-left text-info">Welcome To File Page</h4>
                     </td>
                     <td>
                         <button class="btn btn-info btn-md" onclick="logout();">Logout</button>
@@ -100,6 +106,9 @@
                 <tr>
                     <td align="left">
                         <button class="btn btn-info btn-md" onclick="backToMainPage();">Member List</button>
+                    </td>
+                    <td align="left">
+                        <button class="btn btn-info btn-md"  onclick="toMsgPage();">Message Board</button>
                     </td>
                     <td align="left">
                         <form class="d-inline-block" id="file_form" action="/web_practice1/control/upload_file.php" method="post" enctype="multipart/form-data">
