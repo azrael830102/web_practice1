@@ -17,9 +17,9 @@
         $gender = 0;
         $color = "";
         
-        $sessionisset = isset($_SESSION[$tb_username]) && isset($_SESSION[$tb_account]) && 
-                        isset($_SESSION[$tb_password]) && isset($_SESSION[$tb_gender]) && 
-                        isset($_SESSION[$tb_color]);
+        $sessionisset = isset($_SESSION[$col_username]) && isset($_SESSION[$col_account]) && 
+                        isset($_SESSION[$col_password]) && isset($_SESSION[$col_gender]) && 
+                        isset($_SESSION[$col_color]);
     if(!$sessionisset){
         header("Location:/web_practice1/views/login.php");
         exit();
@@ -35,10 +35,10 @@
             $msg='';
         }
      }else{
-        $name = $_SESSION[$tb_username];
-        $account = $_SESSION[$tb_account];
-        $gender = $_SESSION[$tb_gender];
-        $color = $_SESSION[$tb_color];
+        $name = $_SESSION[$col_username];
+        $account = $_SESSION[$col_account];
+        $gender = $_SESSION[$col_gender];
+        $color = $_SESSION[$col_color];
     }
 ?>
 

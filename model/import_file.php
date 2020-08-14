@@ -5,7 +5,7 @@
     session_start();
     }
   
-  if(!isset($_SESSION[$tb_username])){
+  if(!isset($_SESSION[$col_username])){
       header("Location:/web_practice1/views/login.php");
       exit();
   }

@@ -15,14 +15,14 @@
         $msg = $password_inconsistent_msg;
     }else{
         require("connect_to_mysql.php");
-        $sql_query="SELECT * FROM members where $tb_account = '$account'";
+        $sql_query="SELECT * FROM $tb_members where $col_account = '$account'";
         $result = $connect->query($sql_query);
         if(mysqli_num_rows ($result)){  
             $redirectUrl = '/web_practice1/views/sign_up.php';
             $msg = $account_is_exist_msg;
         }else{
-            $sql_insert="INSERT INTO members 
-                    ($tb_account, $tb_username, $tb_password, $tb_gender, $tb_color)
+            $sql_insert="INSERT INTO $tb_members 
+                    ($col_account, $col_username, $col_password, $col_gender, $col_color)
                     VALUES ('$account', '$username', '$password',$gender , '$color')";
             if ($connect->query($sql_insert) === TRUE) {
                 $redirectUrl = '/web_practice1/views/login.php';

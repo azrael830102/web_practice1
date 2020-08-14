@@ -7,9 +7,6 @@
     $database = 'summerpractice';
     $conn = mysqli_connect($host, $user, $passwd);
 //    echo $host." connected.<br>";
-    $tb_members = 'members';
-    $tb_members_files = 'members_files';
-
     $sql_query="SELECT SCHEMA_NAME
                 FROM INFORMATION_SCHEMA.SCHEMATA
                 WHERE SCHEMA_NAME = '$database'";
@@ -20,7 +17,8 @@
     }
     mysqli_select_db ($conn,$database);
 //    echo $database." connected.<br>";
-        
+
+    //check table members
     $sql_query = "SELECT * 
                   FROM information_schema.tables
                   WHERE table_schema = '$database' 
@@ -28,15 +26,16 @@
     $result = $conn->query($sql_query);
     if(!mysqli_num_rows ($result)){  
         $sql_create_members = "CREATE TABLE $tb_members (
-                                $tb_username varchar(100),
-                                $tb_account varchar(50),
-                                $tb_password varchar(50),
-                                $tb_gender int(11),
-                                $tb_color varchar(50)
+                                $col_account varchar(50) NOT NULL UNIQUE,
+                                $col_username varchar(100),
+                                $col_password varchar(50),
+                                $col_gender int(11),
+                                $col_color varchar(50)
                                 )";
         $result = $conn->query($sql_create_members);
     }
 
+    //check table members_files
     $sql_query = "SELECT * 
                   FROM information_schema.tables
                   WHERE table_schema = '$database' 
@@ -44,13 +43,35 @@
     $result = $conn->query($sql_query);
     if(!mysqli_num_rows ($result)){  
         $sql_create_members = "CREATE TABLE $tb_members_files (
-                                $tb_file_id varchar(20),
-                                $tb_file_name varchar(200),
-                                $tb_file_size varchar(50),
-                                $tb_upload_time timestamp,
-                                $tb_owner varchar(50)
+                                $col_file_id varchar(20) NOT NULL UNIQUE,
+                                $col_file_name varchar(200),
+                                $col_file_size varchar(50),
+                                $col_upload_time timestamp,
+                                $col_owner varchar(50)
                                 )";
         $result = $conn->query($sql_create_members);
     }
+
+    //check table members_topic
+    $sql_query = "SELECT * 
+                  FROM information_schema.tables
+                  WHERE table_schema = '$database' 
+                  AND table_name = '$tb_members_files'";
+    $result = $conn->query($sql_query);
+    if(!mysqli_num_rows ($result)){
+        $sql_create_members = "CREATE TABLE $tb_members_topic (
+                                $col_topic_id VARCHAR(20) NOT NULL UNIQUE, 
+                                $col_topic_poster VARCHAR(50) NOT NULL , 
+                                $col_topic_poster_id VARCHAR(50) NOT NULL ,
+                                $col_topic_title VARCHAR(200) NOT NULL ,
+                                $col_last_reply VARCHAR(500) NOT NULL , 
+                                $col_replier VARCHAR(50) NOT NULL , 
+                                $col_update_time TIMESTAMP NOT NULL , 
+                                $col_create_time TIMESTAMP NOT NULL , 
+                             )";
+        $result = $conn->query($sql_create_members);
+    }
+
+    
     $conn ->close();
 ?>

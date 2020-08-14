@@ -12,8 +12,8 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
         $name = $_POST['username'];
         $account = $_POST['account'];
      }else{
-        $name = $_SESSION[$tb_username];
-        $account = $_SESSION[$tb_account];
+        $name = $_SESSION[$col_username];
+        $account = $_SESSION[$col_account];
     }
     if(isset($_POST['msg'])){
         $msg = $_POST['msg'];
@@ -35,20 +35,21 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
     }
 
     function SubmitNewPost() {
+        $("#operation").val('<?php echo $opertion_create;?>');
         document.getElementById("NewPostForm").submit();
     }
 
-    function doTheOperation(op, ID, Name) {
+    function doTheOperation(op, ID) {
         $("#topic_id").val(fileID);
-        $("#topic_title").val(fileName);
         $("#operation").val(op);
-        if (op == 0) { //rename the file
-            var newName = prompt("Please enter new file name:", Name);
-            if (newName != null && newName != '') {
-                $("#new_file_name").val(newName);
-                document.getElementById("values").submit();
-            }
-        } else {
+        if (op == 0) {      //reply the topic
+            $("#operation").val('<?php echo $opertion_reply;?>');
+            document.getElementById("values").submit();
+        } else if(op == 1){ //modify the topic
+            $("#operation").val('<?php echo $opertion_modify;?>');
+            document.getElementById("values").submit();
+        }else{// op == 2    //delete the topic
+            $("#operation").val('<?php echo $opertion_delete;?>');
             document.getElementById("values").submit();
         }
     }
@@ -101,6 +102,7 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                 </tr>
             </tbody>
         </table>
+        
         <form action="" method="post" class="form" role="form" id="NewPostForm">
             <table class="table" style="border-top-style: hidden">
                 <tbody>
@@ -126,15 +128,16 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                 </tbody>
             </table>
         </form>
+        
         <table id="recordTb" class="table">
             <thead>
                 <td width="10%" align="center">
-                    <h6 class="text-center text-muted">Publisher</h6>
+                    <h6 class="text-center text-muted">Poster</h6>
                 </td>
                 <td align="center">
                     <h6 class="text-center text-muted">Title</h6>
                 </td>
-                <td align="center">
+                <td width="50%" align="center">
                     <h6 class="text-center text-muted">Latest Reply</h6>
                 </td>
                 <td align="center">
@@ -147,17 +150,17 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
             <tbody>
                 <?php
 //                    require("../control/connect_to_mysql.php");
-//                    $sql_query="SELECT * FROM members_files where $tb_owner='$account'";
+//                    $sql_query="SELECT * FROM $tb_members_files where $col_owner='$account'";
 //                    $result = $connect->query($sql_query);
 //                    if(mysqli_num_rows ($result)){  
 //                        $cnt=1;
 //                        while ($row = $result->fetch_assoc()) {
-//                            $file_id_and_name = '"'.$row[$tb_file_id].'","'.$row[$tb_file_name].'"';
+//                            $file_id_and_name = '"'.$row[$col_file_id].'","'.$row[$col_file_name].'"';
 //                            echo "<tr>";
 //                            echo "<td align='center'>#".$cnt."</td>";
-//                            echo "<td align='center'>".$row[$tb_file_name]."</td>";
-//                            echo "<td align='center'>".$row[$tb_file_size]."</td>";
-//                            $timestamp = new DateTime($row[$tb_upload_time]);
+//                            echo "<td align='center'>".$row[$col_file_name]."</td>";
+//                            echo "<td align='center'>".$row[$col_file_size]."</td>";
+//                            $timestamp = new DateTime($row[$col_upload_time]);
 //                            echo "<td align='center'>".$timestamp->format('Y/m/d H:i:s')."</td>";
 //                            echo "<td align='center'>
 //                                    <button class='btn btn-info btn-md' onclick='doTheOperation(0,$file_id_and_name);'>Rename
@@ -192,49 +195,30 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                     <td align="center">
                         2020/08/13 15:03:22
                     </td>
+                    
                     <td align='center'>
-                        <div class="d-inline-block ">
-                            <a href="javascript: void(0)"onclick='doTheOperation(2,"5f34e5ba1cb9a","test.jpg");'> 
-                                <img title="Edit this topic" src="/web_practice1/element/edit.png" width="20" height="20" />
-                            </a>
-                        </div>
-                        <div class="d-inline-block ">
-                            <button class='btn btn-info btn-md' onclick='doTheOperation(0,"5f34e5ba1cb9a","test.jpg");'>Edit
-                            </button>
-                        </div>
+                        <a href="javascript: void(0)" onclick='doTheOperation(0,"5f34e5ba1cb9a");'>
+                            <img title="Reply this topic" src="/web_practice1/element/reply.png" width="20" height="18" />
+                        </a>
                     </td>
                     <td align='center'>
-                        <div class="d-inline-block ">
-                            <a href="javascript: void(0)" onclick='doTheOperation(2,"5f34e5ba1cb9a","test.jpg");'>
-                                <img title="Delete this topic" src="/web_practice1/element/delete.png" width="20" height="20" />
-                            </a>
-                        </div>
-                        <div class="d-inline-block ">
-                            <button class='btn btn-info btn-md' onclick='doTheOperation(1,"5f34e5ba1cb9a","test.jpg");'>Delete
-                            </button>
-                        </div>
+                        <a href="javascript: void(0)" style="cursor: not-allowed;">
+                            <img title="Edit this topic" src="/web_practice1/element/edit.png" width="20" height="20" />
+                        </a>
                     </td>
                     <td align='center'>
-                        <div class="d-inline-block ">
-                            <a href="javascript: void(0)" onclick='doTheOperation(2,"5f34e5ba1cb9a","test.jpg");'>
-                                <img title="Reply this topic" src="/web_practice1/element/reply.png" width="20" height="18" />
-                            </a>
-                        </div>
-                        <div class="d-inline-block ">
-                            <button class='btn btn-info btn-md' onclick=''>Reply
-                            </button>
-                        </div>
+                        <a href="javascript: void(0)" style="cursor: not-allowed;">
+                            <img title="Delete this topic" src="/web_practice1/element/delete.png" width="20" height="20" />
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <form id="values" name="values" action="/web_practice1/control/file_operation.php" method="post">
+        <form id="values" name="values" action="/web_practice1/control/msg_board_control/c_post_page.php" method="post">
             <input type="text" name="msg" value="<?php echo $msg;?>" hidden />
-            <input type="text" id="file_id" name="file_id" value="" hidden />
-            <input type="text" id="file_name" name="file_name" value="" hidden />
-            <input type="text" id="new_file_name" name="new_file_name" value="" hidden />
-            <input type="text" id="file_operation" name="file_operation" value="" hidden />
+            <input type="text" id="topic_id" name="file_id" value="" hidden />
+            <input type="text" id="operation" name="file_operation" value="" hidden />
         </form>
     </div>
 </body>

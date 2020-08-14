@@ -7,8 +7,8 @@
         $name = $_POST['username'];
         $account = $_POST['account'];
      }else{
-        $name = $_SESSION[$tb_username];
-        $account = $_SESSION[$tb_account];
+        $name = $_SESSION[$col_username];
+        $account = $_SESSION[$col_account];
     }
     if(isset($_POST['msg'])){
         $msg = $_POST['msg'];
@@ -60,8 +60,9 @@
     function doTheOperation(op, fileID, fileName) {
         $("#file_id").val(fileID);
         $("#file_name").val(fileName);
-        $("#file_operation").val(op);
+       
         if (op == 0) { //rename the file
+             $("#file_operation").val('<?php echo $opertion_modify;?>');
             var dotIndex = fileName.indexOf('.');
             var name = fileName.substring(0,dotIndex);
             var fileExt = fileName.substring(dotIndex,fileName.length);
@@ -70,7 +71,11 @@
                 $("#new_file_name").val(newFileName+fileExt);
                 document.getElementById("values").submit();
             }
-        } else {
+        } else if(op == 1) {
+             $("#file_operation").val('<?php echo $opertion_delete;?>');
+            document.getElementById("values").submit();
+        }else{
+            $("#file_operation").val('<?php echo $opertion_download;?>');
             document.getElementById("values").submit();
         }
     }
@@ -111,7 +116,7 @@
                         <button class="btn btn-info btn-md"  onclick="toMsgPage();">Message Board</button>
                     </td>
                     <td align="left">
-                        <form class="d-inline-block" id="file_form" action="/web_practice1/control/upload_file.php" method="post" enctype="multipart/form-data">
+                        <form class="d-inline-block" id="file_form" action="/web_practice1/control/file_page_control/upload_file.php" method="post" enctype="multipart/form-data">
                             <label for="selectedFile" class="btn btn-info btn-md">Select file</label>
                             <input type="file" id="selectedFile" name="selectedFile" hidden />
                         </form>
@@ -147,17 +152,17 @@
             <tbody>
                 <?php
                     require("../control/connect_to_mysql.php");
-                    $sql_query="SELECT * FROM members_files where $tb_owner='$account'";
+                    $sql_query="SELECT * FROM $tb_members_files where $col_owner='$account'";
                     $result = $connect->query($sql_query);
                     if(mysqli_num_rows ($result)){  
                         $cnt=1;
                         while ($row = $result->fetch_assoc()) {
-                            $file_id_and_name = '"'.$row[$tb_file_id].'","'.$row[$tb_file_name].'"';
+                            $file_id_and_name = '"'.$row[$col_file_id].'","'.$row[$col_file_name].'"';
                             echo "<tr>";
                             echo "<td align='center'>#".$cnt."</td>";
-                            echo "<td align='center'>".$row[$tb_file_name]."</td>";
-                            echo "<td align='center'>".$row[$tb_file_size]."</td>";
-                            $timestamp = new DateTime($row[$tb_upload_time]);
+                            echo "<td align='center'>".$row[$col_file_name]."</td>";
+                            echo "<td align='center'>".$row[$col_file_size]."</td>";
+                            $timestamp = new DateTime($row[$col_upload_time]);
                             echo "<td align='center'>".$timestamp->format('Y/m/d H:i:s')."</td>";
                             echo "<td align='center'>
                                     <button class='btn btn-info btn-md' onclick='doTheOperation(0,$file_id_and_name);'>Rename
@@ -182,7 +187,7 @@
             </tbody>
         </table>
 
-        <form id="values" name="values" action="/web_practice1/control/file_operation.php" method="post">
+        <form id="values" name="values" action="/web_practice1/control/file_page_control/file_operation.php" method="post">
             <input type="text" name="msg" value="<?php echo $msg;?>" hidden />
             <input type="text" id="file_id" name="file_id" value="" hidden />
             <input type="text" id="file_name" name="file_name" value="" hidden />

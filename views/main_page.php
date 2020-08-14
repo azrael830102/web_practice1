@@ -9,10 +9,10 @@
         $gender = $_POST['gender'];
         $color = $_POST['color'];
      }else{
-        $name = $_SESSION[$tb_username];
-        $account = $_SESSION[$tb_account];
-        $gender = $_SESSION[$tb_gender];
-        $color = $_SESSION[$tb_color];
+        $name = $_SESSION[$col_username];
+        $account = $_SESSION[$col_account];
+        $gender = $_SESSION[$col_gender];
+        $color = $_SESSION[$col_color];
     }
     if(isset($_POST['msg'])){
         $msg = $_POST['msg'];
@@ -42,8 +42,11 @@
         <table class="table" style="border-top-style: hidden">
             <tbody>
                 <tr>
-                    <td width="95%">
+                    <td width="45%">
                         <h3 class="text-center text-info">Hi, <?php echo $name;?></h3>
+                    </td>
+                     <td width="45%" align="left">
+                        <h4 class="text-left text-info">Welcome To Member List</h4>
                     </td>
                     <td>
                         <button class="btn btn-info btn-md" onclick="logout();">Logout</button>
@@ -89,16 +92,16 @@
             <tbody>
                <?php
                     require("../control/connect_to_mysql.php");
-                    $sql_query="SELECT * FROM members";
+                    $sql_query="SELECT * FROM $tb_members";
                     $result = $connect->query($sql_query);
                     if(mysqli_num_rows ($result)){  
                         $cnt=1;
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
                             echo "<td align='center'>#".$cnt."</td>";
-                            echo "<td align='center'>".$row[$tb_username]."</td>";
+                            echo "<td align='center'>".$row[$col_username]."</td>";
                             echo "<td align='center'>";
-                            switch($row[$tb_gender]){
+                            switch($row[$col_gender]){
                                 case 0:
                                     echo "♂ Male";
                                     break;
@@ -111,13 +114,13 @@
                             echo "</td>";
                             echo "<td align='center'>
                                     <span style='display:inline-block'>"
-                                        .$row[$tb_color].
+                                        .$row[$col_color].
                                     "</span>
                                     <span style='display:inline-block; width:50%;'>
-                                        <input class='form-control' name='color' type='color' value=".$row[$tb_color]." disabled />
+                                        <input class='form-control' name='color' type='color' value=".$row[$col_color]." disabled />
                                     </span>
                                 </td>";
-                            echo "<td align='center'>".$row[$tb_account]."</td>";
+                            echo "<td align='center'>".$row[$col_account]."</td>";
                             echo "</tr>";
                             $cnt = $cnt+1;
                         }

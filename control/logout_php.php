@@ -5,7 +5,7 @@
     unset($_SESSION);
     unset($_COOKIE);
     session_destroy();
-    if(isset($_SESSION[$tb_username])){
+    if(isset($_SESSION[$col_username])){
           echo "<script type='text/javascript'>alert(123);</script>";
     }
     header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");

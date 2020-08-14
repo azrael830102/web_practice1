@@ -8,24 +8,24 @@
 	
 	require("connect_to_mysql.php");
 
-	$sql_query="SELECT * FROM members where $tb_account = '$account' and $tb_password = '$password'";
+	$sql_query="SELECT * FROM $tb_members where $col_account = '$account' and $col_password = '$password'";
     $result = $connect->query($sql_query);
 
 	if(mysqli_num_rows ($result)){  
         session_start();
         $row = mysqli_fetch_array($result);
-        $_SESSION[$tb_username] = $row[$tb_username]; 
-        $_SESSION[$tb_account] = $row[$tb_account];
-        $_SESSION[$tb_password] = $row[$tb_password];
-        $_SESSION[$tb_gender] = $row[$tb_gender];
-        $_SESSION[$tb_color] =$row[$tb_color];
+        $_SESSION[$col_username] = $row[$col_username]; 
+        $_SESSION[$col_account] = $row[$col_account];
+        $_SESSION[$col_password] = $row[$col_password];
+        $_SESSION[$col_gender] = $row[$col_gender];
+        $_SESSION[$col_color] =$row[$col_color];
 	}else{
         $msg = $loginfailed_msg;
         $redirectUrl = '/web_practice1/views/login.php'; 
         echo "========|".mysqli_error($connect)."|=======";
 	}
 //    echo $sql_query."<br>";
-    print_r($result); 
+//    print_r($result); 
     $connect -> close();
 ?>
 

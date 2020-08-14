@@ -7,7 +7,7 @@
     $GLOBALS['gender'] = $_POST['gender'];
     $GLOBALS['color'] = $_POST['color'];
     
-    $oripass = $_SESSION[$tb_password];
+    $oripass = $_SESSION[$col_password];
     $msg = '';
     $redirectUrl = '/web_practice1/views/edit_page.php';
 
@@ -29,23 +29,23 @@
         $color = $GLOBALS['color'];   
         require("connect_to_mysql.php");
 
-        $sql_update="UPDATE members
-                     SET $tb_username='$username', $tb_password='$newpassword', 
-                     $tb_gender=$gender , $tb_color='$color' 
-                     WHERE $tb_account='$account'";
+        $sql_update="UPDATE $tb_members
+                     SET $col_username='$username', $col_password='$newpassword', 
+                     $col_gender=$gender , $col_color='$color' 
+                     WHERE $col_account='$account'";
          if(!$change_password){
-              $sql_update="UPDATE members
-                        SET $tb_username='$username', $tb_gender=$gender , $tb_color='$color' 
-                        WHERE $tb_account='$account'";
+              $sql_update="UPDATE $tb_members
+                        SET $col_username='$username', $col_gender=$gender , $col_color='$color' 
+                        WHERE $col_account='$account'";
             }
          $result = $connect->query($sql_update);
          if($result === TRUE){  
              $GLOBALS['msg'] = $account_update_successed_msg;
-             $_SESSION[$tb_username] = $username;
-             $_SESSION[$tb_account] = $account;
-             $_SESSION[$tb_password] = $newpassword;
-             $_SESSION[$tb_gender] = $gender;
-             $_SESSION[$tb_color] = $color;
+             $_SESSION[$col_username] = $username;
+             $_SESSION[$col_account] = $account;
+             $_SESSION[$col_password] = $newpassword;
+             $_SESSION[$col_gender] = $gender;
+             $_SESSION[$col_color] = $color;
              $connect -> close();
              return '/web_practice1/views/main_page.php';
          } else {
