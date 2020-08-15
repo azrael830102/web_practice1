@@ -63,17 +63,37 @@
     if(!mysqli_num_rows ($result)){
         $sql_tb_members_topic = "CREATE TABLE $tb_members_topic (
                                 $col_topic_id VARCHAR(20) NOT NULL UNIQUE, 
-                                $col_topic_poster VARCHAR(50) NOT NULL , 
                                 $col_topic_poster_id VARCHAR(50) NOT NULL ,
+                                $col_topic_poster VARCHAR(50) NOT NULL , 
                                 $col_topic_title VARCHAR(200) NOT NULL ,
-                                $col_last_reply VARCHAR(500) NOT NULL , 
-                                $col_replier VARCHAR(50) NOT NULL , 
-                                $col_update_time TIMESTAMP NOT NULL , 
-                                $col_create_time TIMESTAMP NOT NULL
+                                $col_topic_content VARCHAR(500) NOT NULL,
+                                $col_last_reply_id VARCHAR(20), 
+                                $col_topic_update_time TIMESTAMP NOT NULL , 
+                                $col_topic_create_time TIMESTAMP NOT NULL
                                 )";
         $result = $conn->query($sql_tb_members_topic);
     }
 //    echo $tb_members_topic." created.<br>";
+
+ //check table members_topic
+    $sql_query = "SELECT * 
+                  FROM information_schema.tables
+                  WHERE table_schema = '$database' 
+                  AND table_name = '$tb_members_topic_reply'";
+    $result = $conn->query($sql_query);
+    if(!mysqli_num_rows ($result)){
+        $sql = "CREATE TABLE $tb_members_topic_reply (
+              $col_topic_reply_id VARCHAR(20) NOT NULL UNIQUE, 
+              $col_topic_id VARCHAR(50) NOT NULL ,
+              $col_replier_id VARCHAR(50) NOT NULL , 
+              $col_replier VARCHAR(200) NOT NULL ,
+              $col_reply_content VARCHAR(500) NOT NULL , 
+              $col_reply_update_time TIMESTAMP NOT NULL , 
+              $col_reply_create_time TIMESTAMP NOT NULL
+              )";
+        $result = $conn->query($sql);
+    }
+//    echo $tb_members_topic_reply." created.<br>";
 
     $conn ->close();
 ?>

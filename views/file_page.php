@@ -20,11 +20,13 @@
 ?>
 <script type="text/javascript">
     var limitInMB = 5;
+
     function backToMainPage() {
         location.replace('/web_practice1/views/main_page.php');
     }
+
     function toMsgPage() {
-         location.replace('/web_practice1/views/msg_board/post_page.php');
+        location.replace('/web_practice1/views/msg_board/post_page.php');
     }
 
     function checkFileLimit(number) {
@@ -60,21 +62,23 @@
     function doTheOperation(op, fileID, fileName) {
         $("#file_id").val(fileID);
         $("#file_name").val(fileName);
-       
+
         if (op == 0) { //rename the file
-             $("#file_operation").val('<?php echo $opertion_modify;?>');
+            $("#file_operation").val('<?php echo $opertion_modify;?>');
             var dotIndex = fileName.indexOf('.');
-            var name = fileName.substring(0,dotIndex);
-            var fileExt = fileName.substring(dotIndex,fileName.length);
+            var name = fileName.substring(0, dotIndex);
+            var fileExt = fileName.substring(dotIndex, fileName.length);
             var newFileName = prompt("Please enter new file name:", name);
             if (newFileName != null && newFileName != '') {
-                $("#new_file_name").val(newFileName+fileExt);
+                $("#new_file_name").val(newFileName + fileExt);
                 document.getElementById("values").submit();
             }
-        } else if(op == 1) {
-             $("#file_operation").val('<?php echo $opertion_delete;?>');
-            document.getElementById("values").submit();
-        }else{
+        } else if (op == 1) {
+            if (confirm('<?php echo $confirm_to_delete_msg;?>')) {
+                $("#file_operation").val('<?php echo $opertion_delete;?>');
+                document.getElementById("values").submit();
+            }
+        } else {
             $("#file_operation").val('<?php echo $opertion_download;?>');
             document.getElementById("values").submit();
         }
@@ -113,7 +117,7 @@
                         <button class="btn btn-info btn-md" onclick="backToMainPage();">Member List</button>
                     </td>
                     <td align="left">
-                        <button class="btn btn-info btn-md"  onclick="toMsgPage();">Message Board</button>
+                        <button class="btn btn-info btn-md" onclick="toMsgPage();">Message Board</button>
                     </td>
                     <td align="left">
                         <form class="d-inline-block" id="file_form" action="/web_practice1/control/file_page_control/upload_file.php" method="post" enctype="multipart/form-data">
@@ -159,24 +163,24 @@
                         while ($row = $result->fetch_assoc()) {
                             $file_id_and_name = '"'.$row[$col_file_id].'","'.$row[$col_file_name].'"';
                             echo "<tr>";
-                            echo "<td align='center'>#".$cnt."</td>";
-                            echo "<td align='center'>".$row[$col_file_name]."</td>";
-                            echo "<td align='center'>".$row[$col_file_size]."</td>";
-                            $timestamp = new DateTime($row[$col_upload_time]);
-                            echo "<td align='center'>".$timestamp->format('Y/m/d H:i:s')."</td>";
-                            echo "<td align='center'>
-                                    <button class='btn btn-info btn-md' onclick='doTheOperation(0,$file_id_and_name);'>Rename
-                                    </button>
-                                  </td>";
-                            echo "<td align='center'>
-                                    <button class='btn btn-info btn-md' onclick='doTheOperation(1,$file_id_and_name);'>Delete
-                                    </button>
-                                  </td>";
-                            echo "<td align='center'>
-                                    <button class='btn btn-info btn-md' onclick='doTheOperation(2,$file_id_and_name);'>Download
-                                    </button>
-                                  </td>";
-                           
+                                echo "<td align='center'>#".$cnt."</td>";
+                                echo "<td align='center'>".$row[$col_file_name]."</td>";
+                                echo "<td align='center'>".$row[$col_file_size]."</td>";
+                                $timestamp = new DateTime($row[$col_upload_time]);
+                                echo "<td align='center'>".$timestamp->format('Y/m/d H:i:s')."</td>";
+                                echo "<td align='center'>
+                                        <button class='btn btn-info btn-md' onclick='doTheOperation(0,$file_id_and_name);'>Rename
+                                        </button>
+                                      </td>";
+                                echo "<td align='center'>
+                                        <button class='btn btn-info btn-md' onclick='doTheOperation(1,$file_id_and_name);'>Delete
+                                        </button>
+                                      </td>";
+                                echo "<td align='center'>
+                                        <button class='btn btn-info btn-md' onclick='doTheOperation(2,$file_id_and_name);'>Download
+                                        </button>
+                                      </td>";
+                           echo "</tr>";
                             $cnt = $cnt+1;
                         }
                     }else{
