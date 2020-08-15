@@ -24,6 +24,9 @@
     $password_inconsistent_msg = 'Password inconsistent!';
     $password_incorrect = 'Password is incorrect!';
 
+    $topic_create_successed_msg = "New topic has been posted!";
+    $topic_create_failed_msg = "New topic posted failed.";
+
 //general parameter
 	$upload_file_folder_path = "../../files/";
     
@@ -48,7 +51,7 @@
 		$col_file_name = "file_name";
 		$col_file_size = "file_size";
 		$col_upload_time = "upload_time";
-		$col_owner = "owner"
+		$col_owner = "owner";
             
     //members_topic
     $tb_members_topic = "members_topic";

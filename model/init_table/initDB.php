@@ -34,6 +34,7 @@
                                 )";
         $result = $conn->query($sql_create_members);
     }
+//    echo $tb_members." created.<br>";
 
     //check table members_files
     $sql_query = "SELECT * 
@@ -51,15 +52,16 @@
                                 )";
         $result = $conn->query($sql_create_members);
     }
+//    echo $tb_members_files." created.<br>";
 
     //check table members_topic
     $sql_query = "SELECT * 
                   FROM information_schema.tables
                   WHERE table_schema = '$database' 
-                  AND table_name = '$tb_members_files'";
+                  AND table_name = '$tb_members_topic'";
     $result = $conn->query($sql_query);
     if(!mysqli_num_rows ($result)){
-        $sql_create_members = "CREATE TABLE $tb_members_topic (
+        $sql_tb_members_topic = "CREATE TABLE $tb_members_topic (
                                 $col_topic_id VARCHAR(20) NOT NULL UNIQUE, 
                                 $col_topic_poster VARCHAR(50) NOT NULL , 
                                 $col_topic_poster_id VARCHAR(50) NOT NULL ,
@@ -67,11 +69,11 @@
                                 $col_last_reply VARCHAR(500) NOT NULL , 
                                 $col_replier VARCHAR(50) NOT NULL , 
                                 $col_update_time TIMESTAMP NOT NULL , 
-                                $col_create_time TIMESTAMP NOT NULL , 
-                             )";
-        $result = $conn->query($sql_create_members);
+                                $col_create_time TIMESTAMP NOT NULL
+                                )";
+        $result = $conn->query($sql_tb_members_topic);
     }
+//    echo $tb_members_topic." created.<br>";
 
-    
     $conn ->close();
 ?>

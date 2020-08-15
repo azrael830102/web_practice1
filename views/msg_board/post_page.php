@@ -1,6 +1,6 @@
 <?php 
 
-include ((dirname(dirname(__DIR__))).'/model/import_file.php');
+include ('../../model/import_file.php');
 ?>
 
 
@@ -24,8 +24,6 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
     }
 ?>
 <script type="text/javascript">
-    var limitInMB = 5;
-
     function backToMainPage() {
         location.replace('/web_practice1/views/main_page.php');
     }
@@ -35,12 +33,11 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
     }
 
     function SubmitNewPost() {
-        $("#operation").val('<?php echo $opertion_create;?>');
         document.getElementById("NewPostForm").submit();
     }
 
     function doTheOperation(op, ID) {
-        $("#topic_id").val(fileID);
+        $("#topic_id").val(ID);
         $("#operation").val(op);
         if (op == 0) {      //reply the topic
             $("#operation").val('<?php echo $opertion_reply;?>');
@@ -64,7 +61,19 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                 $("#NewPost").html("New Post")
                 $("#NewPostForm").hide('slow');
             }
-
+        });
+        
+        $("#new_topic_content").keyup(function(){
+            var cntlength = $("#new_topic_content").val().length;
+            var content = "("+cntlength+" of 500) character";
+            if(cntlength >= 500){
+                $("#contentLength").removeClass("text-secondary");
+                $("#contentLength").addClass("text-danger");
+            }else{
+                $("#contentLength").removeClass("text-danger");
+                $("#contentLength").addClass("text-secondary");
+            }    
+            $("#contentLength").html(content);
         });
     });
 
@@ -103,7 +112,7 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
             </tbody>
         </table>
         
-        <form action="" method="post" class="form" role="form" id="NewPostForm">
+        <form action="/web_practice1/control/msg_board_control/c_post_page.php" method="post" class="form" role="form" id="NewPostForm">
             <table class="table" style="border-top-style: hidden">
                 <tbody>
                     <tr>
@@ -115,8 +124,11 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                     <tr>
                         <div class="form-group">
                             <td align="left">
-                                <label for="new_topic_title" class="text-info">New Topic Content:</label>
-                                <textarea class="form-control" id="new_topic_content" name="new_topic_content"></textarea>
+                                <label for="new_topic_content" class="text-info">New Topic Content:</label>
+                                <label for="new_topic_content" id="contentLength" class="text-secondary">(0 of 500) character</label>
+                                <textarea class="form-control" id="new_topic_content" name="new_topic_content"
+                                maxlength="500"
+                                ></textarea>
                             </td>
                         </div>
                     </tr>
@@ -127,18 +139,25 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                     </tr>
                 </tbody>
             </table>
+            <input type="text" id="NewPostFormOp" name="operation" value="<?php echo $opertion_create;?>" hidden />
         </form>
         
         <table id="recordTb" class="table">
             <thead>
+               <td width="5%" align="center">
+                    <h6 class="text-center text-muted">No.</h6>
+                </td>
                 <td width="10%" align="center">
                     <h6 class="text-center text-muted">Poster</h6>
                 </td>
                 <td align="center">
                     <h6 class="text-center text-muted">Title</h6>
                 </td>
-                <td width="50%" align="center">
+                <td width="30%" align="center">
                     <h6 class="text-center text-muted">Latest Reply</h6>
+                </td>
+                <td width="10%" align="center">
+                    <h6 class="text-center text-muted">Latest Replier</h6>
                 </td>
                 <td align="center">
                     <h6 class="text-center text-muted">Update Time</h6>
@@ -147,78 +166,66 @@ include ((dirname(dirname(__DIR__))).'/model/import_file.php');
                     <h6 class="text-center text-muted"> Operation</h6>
                 </td>
             </thead>
+            
             <tbody>
                 <?php
-//                    require("../control/connect_to_mysql.php");
-//                    $sql_query="SELECT * FROM $tb_members_files where $col_owner='$account'";
-//                    $result = $connect->query($sql_query);
-//                    if(mysqli_num_rows ($result)){  
-//                        $cnt=1;
-//                        while ($row = $result->fetch_assoc()) {
-//                            $file_id_and_name = '"'.$row[$col_file_id].'","'.$row[$col_file_name].'"';
-//                            echo "<tr>";
-//                            echo "<td align='center'>#".$cnt."</td>";
-//                            echo "<td align='center'>".$row[$col_file_name]."</td>";
-//                            echo "<td align='center'>".$row[$col_file_size]."</td>";
-//                            $timestamp = new DateTime($row[$col_upload_time]);
-//                            echo "<td align='center'>".$timestamp->format('Y/m/d H:i:s')."</td>";
-//                            echo "<td align='center'>
-//                                    <button class='btn btn-info btn-md' onclick='doTheOperation(0,$file_id_and_name);'>Rename
-//                                    </button>
-//                                  </td>";
-//                            echo "<td align='center'>
-//                                    <button class='btn btn-info btn-md' onclick='doTheOperation(1,$file_id_and_name);'>Delete
-//                                    </button>
-//                                  </td>";
-//                            echo "<td align='center'>
-//                                    <button class='btn btn-info btn-md' onclick='doTheOperation(2,$file_id_and_name);'>Download
-//                                    </button>
-//                                  </td>";
-//                           
-//                            $cnt = $cnt+1;
-//                        }
-//                    }else{
-//                         echo "<tr><td colspan='7' align='center'>No record...</td></tr>";
-//                    }
-//                    $connect -> close();
+                    require("../../control/connect_to_mysql.php");
+                    $sql_query="SELECT * FROM $tb_members_topic order by $col_update_time desc";
+                    $result = $connect->query($sql_query);
+                    if(mysqli_num_rows ($result)){  
+                        $cnt=1;
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td align='center'>#".$cnt."</td>";
+                            echo "<td align='center'>".$row[$col_topic_poster]."</td>";
+                            echo "<td align='center'>".$row[$col_topic_title]."</td>";
+                            echo "<td align='center'>".$row[$col_last_reply]."</td>";
+                            echo "<td align='center'>".$row[$col_replier]."</td>";
+                            $timestamp = new DateTime($row[$col_update_time]);
+                            echo "<td align='center'>".$timestamp->format('Y/m/d H:i:s')."</td>";
+                            
+                            $is_topic_owner = ($account == $row[$col_topic_poster_id]);
+                            $topic_id = '"'.$row[$col_topic_id].'"';
+                            echo "<td align='center'>
+                                    <a href='javascript: void(0)' onclick='doTheOperation(0,$topic_id);'>
+                                        <img title='Reply this topic' src='/web_practice1/element/reply.png' width='20' height='18' />
+                                    </a>
+                                </td>";
+                            
+                            $edit_permission = "";
+                            $delete_permission = "";
+                            
+                            if($is_topic_owner){
+                                $edit_permission = "onclick='doTheOperation(1,$topic_id);'";
+                                $delete_permission = "onclick='doTheOperation(2,$topic_id);'";
+                            }else{
+                                $edit_permission = "style='cursor: not-allowed;'";
+                                $delete_permission = "style='cursor: not-allowed;'";
+                            }
+                            echo "<td align='center'>
+                                <a href='javascript: void(0)' $edit_permission>
+                                    <img hint='Edit this topic' src='/web_practice1/element/edit.png' width='20' height='20' />
+                                </a>
+                                </td>";
+                            echo "<td align='center'>
+                                    <a href='javascript: void(0)' $delete_permission>
+                                        <img title='Delete this topic' src='/web_practice1/element/delete.png' width='20' height='20' />
+                                    </a>
+                                </td>";
+                            $cnt = $cnt+1;
+                        }
+                    }else{
+                         echo "<tr><td colspan='7' align='center'>No record...</td></tr>";
+                    }
+                    $connect -> close();
                 ?>
-                <tr>
-                    <td width="10%" align="center">
-                        test
-                    </td>
-                    <td align="center">
-                        test topic
-                    </td>
-                    <td align="center">
-                        test reply
-                    </td>
-                    <td align="center">
-                        2020/08/13 15:03:22
-                    </td>
-                    
-                    <td align='center'>
-                        <a href="javascript: void(0)" onclick='doTheOperation(0,"5f34e5ba1cb9a");'>
-                            <img title="Reply this topic" src="/web_practice1/element/reply.png" width="20" height="18" />
-                        </a>
-                    </td>
-                    <td align='center'>
-                        <a href="javascript: void(0)" style="cursor: not-allowed;">
-                            <img title="Edit this topic" src="/web_practice1/element/edit.png" width="20" height="20" />
-                        </a>
-                    </td>
-                    <td align='center'>
-                        <a href="javascript: void(0)" style="cursor: not-allowed;">
-                            <img title="Delete this topic" src="/web_practice1/element/delete.png" width="20" height="20" />
-                        </a>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
         <form id="values" name="values" action="/web_practice1/control/msg_board_control/c_post_page.php" method="post">
             <input type="text" name="msg" value="<?php echo $msg;?>" hidden />
-            <input type="text" id="topic_id" name="file_id" value="" hidden />
-            <input type="text" id="operation" name="file_operation" value="" hidden />
+            <input type="text" id="topic_id" name="topic_id" value="" hidden />
+            <input type="text" id="operation" name="operation" value="" hidden />
         </form>
     </div>
 </body>
