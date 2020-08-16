@@ -84,7 +84,7 @@
     if(!mysqli_num_rows ($result)){
         $sql = "CREATE TABLE $tb_members_topic_reply (
               $col_topic_reply_id VARCHAR(20) NOT NULL UNIQUE, 
-              $col_topic_id VARCHAR(50) NOT NULL ,
+              $col_pertain_topic_id VARCHAR(50) NOT NULL ,
               $col_replier_id VARCHAR(50) NOT NULL , 
               $col_replier VARCHAR(200) NOT NULL ,
               $col_reply_content VARCHAR(500) NOT NULL , 
