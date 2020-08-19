@@ -199,7 +199,7 @@ include ('../../model/import_file.php');
                     if(mysqli_num_rows ($result)){
                         $cnt=1;
                         while ($row = $result->fetch_assoc()) {
-//                            print_r($row);
+                            //print_r($row);
                             $timestamp = new DateTime($row[$col_topic_update_time]);
                             $is_topic_owner = ($account == $row[$col_topic_poster_id]);
                             $topic_id = '"'.$row[$col_topic_id].'"';

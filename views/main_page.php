@@ -24,19 +24,27 @@
 ?>
 <script type="text/javascript">
     function toEditPage() {
-        document.getElementById("values").action='/web_practice1/views/edit_page.php';
+        document.getElementById("values").action = '/web_practice1/views/edit_page.php';
         document.getElementById("values").submit();
     }
+
     function toFilePage() {
-        document.getElementById("values").action='/web_practice1/views/file_page.php';
+        document.getElementById("values").action = '/web_practice1/views/file_page.php';
         document.getElementById("values").submit();
     }
+
+    function toSubscribePage() {
+        document.getElementById("values").action = '/web_practice1/views/subscribe_page.php';
+        document.getElementById("values").submit();
+    }
+
     function toMsgPage() {
-        document.getElementById("values").action='/web_practice1/views/msg_board/post_page.php';
+        document.getElementById("values").action = '/web_practice1/views/msg_board/post_page.php';
         document.getElementById("values").submit();
     }
-    
+
 </script>
+
 <body>
     <div class="container">
         <table class="table" style="border-top-style: hidden">
@@ -45,7 +53,7 @@
                     <td width="45%">
                         <h3 class="text-center text-info">Hi, <?php echo $name;?></h3>
                     </td>
-                     <td width="45%" align="left">
+                    <td width="45%" align="left">
                         <h4 class="text-left text-info">Welcome To Member List</h4>
                     </td>
                     <td>
@@ -62,15 +70,18 @@
                         <button class="btn btn-info btn-md" onclick="toFilePage();">File Page</button>
                     </td>
                     <td align="center">
-                        <button class="btn btn-info btn-md"  onclick="toMsgPage();">Message Board</button>
+                        <button class="btn btn-info btn-md" onclick="toMsgPage();">Message Board</button>
                     </td>
-                     <td align="center">
-                        <button class="btn btn-info btn-md"  onclick="toEditPage();">Edit Information</button>
+                    <td align="center">
+                        <button class="btn btn-info btn-md" onclick="toSubscribePage();">Subscribe</button>
+                    </td>
+                    <td align="center">
+                        <button class="btn btn-info btn-md" onclick="toEditPage();">Edit Information</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        
+
         <table id="recordTb" class="table">
             <thead>
                 <td width="10pt" align="center">
@@ -90,7 +101,7 @@
                 </td>
             </thead>
             <tbody>
-               <?php
+                <?php
                     require("../control/connect_to_mysql.php");
                     $sql_query="SELECT * FROM $tb_members";
                     $result = $connect->query($sql_query);
@@ -131,7 +142,7 @@
                 ?>
             </tbody>
         </table>
-        
+
         <form id="values" name="values" action="" method="post">
             <input type="text" name="account" value="<?php echo $account;?>" hidden />
             <input type="text" name="username" value="<?php echo $name;?>" hidden />

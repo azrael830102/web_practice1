@@ -30,7 +30,8 @@
                                 $col_username varchar(100),
                                 $col_password varchar(50),
                                 $col_gender int(11),
-                                $col_color varchar(50)
+                                $col_color varchar(50),
+                                $col_is_subscribe boolean DEFAULT false)
                                 )";
         $result = $conn->query($sql_create_members);
     }

@@ -58,6 +58,7 @@
 		$col_username = "username";
 		$col_gender = "gender";
 		$col_color = "color";
+        $col_is_subscribe = "is_subscribe";
 
 	//members_files
 	$tb_members_files = "members_files";
